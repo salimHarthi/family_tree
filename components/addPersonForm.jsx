@@ -1,10 +1,29 @@
 import { Button, DatePicker, Form, Input } from 'antd';
 import UploadAvatar from './uploadAvatar';
-
-const onFinish = (value) => {
-  console.log(value);
-};
+import { useReactFlow } from 'reactflow';
+import { getLayoutedElements } from '@/util/flowUtil';
+import { v4 as uuidv4 } from 'uuid';
 const AddPersonForm = () => {
+  const { setNodes, getEdges, getNodes } = useReactFlow();
+  const onFinish = (value) => {
+    console.log(value);
+    let nodes = getNodes();
+    let edges = getEdges();
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+      [
+        ...nodes,
+        {
+          id: uuidv4(),
+          type: 'imageNode',
+          data: { birthday: '1995/2/2', name: value.firstName },
+        },
+      ],
+      edges
+    );
+
+    setNodes([...layoutedNodes]);
+  };
+
   return (
     <Form
       onFinish={onFinish}
