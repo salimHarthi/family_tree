@@ -7,69 +7,66 @@ import ReactFlow, {
   addEdge,
   MiniMap,
   Controls,
+  Background,
 } from 'reactflow';
 import ImageNode from '@/components/imageNode';
 import 'reactflow/dist/style.css';
 const snapGrid = [20, 20];
 const nodeTypes = {
-  ImageNode: ImageNode,
+  imageNode: ImageNode,
 };
 
 const defaultViewport = { x: 0, y: 0, zoom: 1.5 };
 const initialNodes = [
   {
     id: '1',
-    type: 'ImageNode',
+    type: 'imageNode',
     position: { x: 0, y: 0 },
-    data: { label: '1' },
+    data: { birthday: '1995/2/2', name: 'salim' },
   },
   {
     id: '2',
-    type: 'ImageNode',
-    position: { x: 0, y: 100 },
-    data: { label: '2' },
+    type: 'imageNode',
+    position,
+    data: { birthday: '1995/2/2', name: 'salim' },
+  },
+  {
+    id: '3',
+    type: 'imageNode',
+    position,
+    data: { birthday: '1995/2/2', name: 'salim' },
+  },
+  {
+    id: '4',
+    type: 'imageNode',
+    position,
+    data: { birthday: '1995/2/2', name: 'salim' },
   },
 ];
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 export default function Home() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState();
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
-    (params) =>
-      setEdges((eds) =>
-        addEdge({ ...params, animated: true, style: { stroke: '#fff' } }, eds)
-      ),
-    []
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
   );
-
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      snapToGrid={true}
-      snapGrid={snapGrid}
-      defaultViewport={defaultViewport}
-      fitView
-      attributionPosition='bottom-left'
-    >
-      <MiniMap
-        nodeStrokeColor={(n) => {
-          if (n.type === 'input') return '#0041d0';
-          if (n.type === 'selectorNode') return bgColor;
-          if (n.type === 'output') return '#ff0072';
-        }}
-        nodeColor={(n) => {
-          if (n.type === 'selectorNode') return bgColor;
-          return '#fff';
-        }}
-      />
-      <Controls />
-    </ReactFlow>
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <ReactFlow
+        nodeTypes={nodeTypes}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+      >
+        <Controls />
+        <MiniMap />
+        <Background variant='dots' gap={12} size={1} />
+      </ReactFlow>
+    </div>
   );
 }
