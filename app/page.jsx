@@ -1,6 +1,6 @@
 'use client';
-
-import React, { useCallback } from 'react';
+import AddPersonForm from '@/components/addPersonForm';
+import React, { useCallback, useState } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -9,12 +9,12 @@ import ReactFlow, {
   Controls,
   Background,
   Panel,
-  ConnectionLineType,
+  useReactFlow,
 } from 'reactflow';
 import ImageNode from '@/components/imageNode';
 import dagre from 'dagre';
 import 'reactflow/dist/style.css';
-const snapGrid = [20, 20];
+import { Button } from 'antd';
 const nodeTypes = {
   imageNode: ImageNode,
 };
@@ -66,8 +66,6 @@ const getLayoutedElements = (nodes, edges, direction = 'TB') => {
 
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
-    // We are shifting the dagre node position (anchor=center center) to the top left
-    // so it matches the React Flow node anchor point (top left).
     node.position = {
       x: nodeWithPosition.x - nodeWidth / 2,
       y: nodeWithPosition.y - nodeHeight / 2,
@@ -84,17 +82,13 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
   initialEdges
 );
 export default function Home() {
+  const [rfInstance, setRfInstance] = useState(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  const { setViewport } = useReactFlow();
 
   const onConnect = useCallback(
-    (params) =>
-      setEdges((eds) =>
-        addEdge(
-          { ...params, type: ConnectionLineType.SmoothStep, animated: true },
-          eds
-        )
-      ),
+    (params) => setEdges((eds) => addEdge({ ...params }, eds)),
     []
   );
   const onLayout = useCallback(
@@ -107,6 +101,26 @@ export default function Home() {
     },
     [nodes, edges]
   );
+  const onSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      localStorage.setItem('flowKey', JSON.stringify(flow));
+    }
+  }, [rfInstance]);
+  const onRestore = useCallback(() => {
+    const restoreFlow = async () => {
+      const flow = JSON.parse(localStorage.getItem('flowKey'));
+
+      if (flow) {
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        setNodes(flow.nodes || []);
+        setEdges(flow.edges || []);
+        setViewport({ x, y, zoom });
+      }
+    };
+
+    restoreFlow();
+  }, [setNodes, setViewport]);
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <ReactFlow
@@ -116,19 +130,24 @@ export default function Home() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onInit={setRfInstance}
       >
         <Controls />
-        <MiniMap />
+        <MiniMap nodeColor='#6865A5' nodeStrokeWidth={3} zoomable pannable />
         <Background variant='dots' gap={12} size={1} />
         <Panel position='top-right'>
-          <button
-            className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-            onClick={() => onLayout('TB')}
-          >
+          <Button type='primary' ghost={false} onClick={() => onLayout('TB')}>
             Align
-          </button>
+          </Button>
+          <Button type='primary' onClick={onSave}>
+            save
+          </Button>
+          <Button type='primary' onClick={onRestore}>
+            restore
+          </Button>
         </Panel>
       </ReactFlow>
+      <AddPersonForm />
     </div>
   );
 }
