@@ -11,12 +11,15 @@ export default memo(({ data: { birthday, name }, isConnectable }) => {
         onConnect={(params) => console.log('handle onConnect', params)}
         isConnectable={isConnectable}
       />
-      <div class='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 w-80'>
-        <div class='flex justify-between px-4 pt-4'>
+      <div
+        style={{ width: 324 }}
+        className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'
+      >
+        <div className='flex justify-between px-4 pt-4'>
           <button
             id='dropdownButton'
             data-dropdown-toggle='dropdown'
-            class='inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5'
+            className='inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5'
             type='button'
           >
             <svg
@@ -26,7 +29,7 @@ export default memo(({ data: { birthday, name }, isConnectable }) => {
               viewBox='0 0 24 24'
               xmlns='http://www.w3.org/2000/svg'
               aria-hidden='true'
-              class='w-6 h-6'
+              className='w-6 h-6'
             >
               <path
                 stroke-linecap='round'
@@ -38,7 +41,7 @@ export default memo(({ data: { birthday, name }, isConnectable }) => {
           <button
             id='dropdownButton'
             data-dropdown-toggle='dropdown'
-            class='inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5'
+            className='inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5'
             type='button'
           >
             <svg
@@ -48,7 +51,7 @@ export default memo(({ data: { birthday, name }, isConnectable }) => {
               viewBox='0 0 24 24'
               xmlns='http://www.w3.org/2000/svg'
               aria-hidden='true'
-              class='w-6 h-6'
+              className='w-6 h-6'
             >
               <path
                 stroke-linecap='round'
@@ -58,16 +61,16 @@ export default memo(({ data: { birthday, name }, isConnectable }) => {
             </svg>
           </button>
         </div>
-        <div class='flex flex-col items-center pb-10 '>
+        <div className='flex flex-col items-center pb-10 text-center'>
           <img
-            class='w-24 h-24 mb-3 rounded-full shadow-lg'
+            className='w-24 h-24 mb-3 rounded-full shadow-lg'
             src='/docs/images/people/profile-picture-3.jpg'
             alt='Bonnie image'
           />
-          <h5 class='mb-1 text-xl font-medium text-gray-900 dark:text-white break-all'>
+          <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white break-all'>
             {name}
           </h5>
-          <span class='text-sm text-gray-500 dark:text-gray-400'>
+          <span className='text-sm text-gray-500 dark:text-gray-400'>
             {birthday}
           </span>
         </div>
