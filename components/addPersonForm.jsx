@@ -1,28 +1,40 @@
-import { Button, DatePicker, Form, Input, Select } from 'antd';
+import { Button, DatePicker, Form, Input, Select, Space, Row } from 'antd';
 import UploadAvatar from './uploadAvatar';
 import { useReactFlow } from 'reactflow';
 import { getLayoutedElements } from '@/util/flowUtil';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 const AddPersonForm = () => {
   const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
   const onFinish = (value) => {
     console.log(value);
-    let nodes = getNodes();
-    let edges = getEdges();
-    let id = uuidv4();
+    const listOfNode = getNodes();
+    const listOfEdges = getEdges();
+    const parentId = uuidv4();
 
+    value?.children?.forEach((item) => {
+      let childId = uuidv4();
+      listOfNode.push({
+        id: childId,
+        type: 'imageNode',
+        data: { birthday: '1995/2/2', name: item?.firstName },
+      });
+      listOfEdges.push({ id: uuidv4(), source: parentId, target: childId });
+    });
     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
       [
-        ...nodes,
+        ...listOfNode,
         {
-          id: id,
+          id: parentId,
           type: 'imageNode',
           data: { birthday: '1995/2/2', name: value.firstName },
         },
       ],
-      [...edges, { id: uuidv4(), source: value?.father?.value, target: id }]
+      [
+        ...listOfEdges,
+        { id: uuidv4(), source: value?.father?.value, target: parentId },
+      ]
     );
-
     setNodes([...layoutedNodes]);
     setEdges([...layoutedEdges]);
   };
@@ -31,11 +43,9 @@ const AddPersonForm = () => {
     <Form
       onFinish={onFinish}
       // onFinishFailed={onFinishFailed}
-      labelCol={{
-        span: 4,
-      }}
+
       wrapperCol={{
-        span: 14,
+        span: 23,
       }}
       layout='horizontal'
       style={{
@@ -90,6 +100,81 @@ const AddPersonForm = () => {
       <Form.Item label='Image' labelCol={{ span: 24 }}>
         <UploadAvatar />
       </Form.Item>
+      <Form.List name='children'>
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map(({ key, name, ...restField }) => (
+              <Space
+                direction='vertical'
+                key={key}
+                style={{
+                  display: 'flex',
+                  marginBottom: 20,
+                }}
+                align='baseline'
+              >
+                <Form.Item
+                  label='First Name'
+                  labelCol={{ span: 24 }}
+                  {...restField}
+                  name={[name, 'firstName']}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Missing first name',
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  {...restField}
+                  name={[name, 'lastName']}
+                  label='Last Name'
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Missing last name',
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  labelCol={{ span: 24 }}
+                  {...restField}
+                  name={[name, 'birthDay']}
+                  label='Date of birth'
+                >
+                  <DatePicker />
+                </Form.Item>
+                <Form.Item labelCol={{ span: 24 }} {...restField} label='Image'>
+                  <UploadAvatar />
+                </Form.Item>
+                <Button
+                  type='dashed'
+                  onClick={() => remove(name)}
+                  block
+                  icon={<MinusCircleOutlined />}
+                >
+                  Delete field
+                </Button>
+              </Space>
+            ))}
+            <Form.Item>
+              <Button
+                type='dashed'
+                onClick={() => add()}
+                block
+                icon={<PlusOutlined />}
+              >
+                Add children
+              </Button>
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
       <Form.Item>
         <Button type='primary' htmlType='submit'>
           Add
