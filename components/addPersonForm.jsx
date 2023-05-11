@@ -60,6 +60,7 @@ const AddPersonForm = () => {
     );
     setNodes([...layoutedNodes]);
     setEdges([...layoutedEdges]);
+    form.resetFields();
   };
 
   return (
@@ -90,7 +91,7 @@ const AddPersonForm = () => {
         <Input />
       </Form.Item>
       <Form.Item
-        label='last Name'
+        label='Last Name'
         name='lastName'
         labelCol={{ span: 24 }}
         rules={[
