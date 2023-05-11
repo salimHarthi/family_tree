@@ -1,7 +1,7 @@
 'use client';
 import './globals.css';
 import { Inter } from 'next/font/google';
-
+import { ConfigProvider, theme } from 'antd';
 import { ReactFlowProvider } from 'reactflow';
 export const metadata = {
   title: 'Create Next App',
@@ -12,7 +12,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <ReactFlowProvider>
-        <body>{children}</body>
+        <ConfigProvider
+          theme={{
+            algorithm: theme.darkAlgorithm,
+          }}
+        >
+          <body className='p-5'>{children}</body>
+        </ConfigProvider>
       </ReactFlowProvider>
     </html>
   );
