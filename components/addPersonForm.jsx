@@ -1,10 +1,27 @@
-import { Button, DatePicker, Form, Input, Select, Space, Row } from 'antd';
+'use client';
+import { useEffect, useState } from 'react';
+import { Button, DatePicker, Form, Input, Select, Space } from 'antd';
 import UploadAvatar from './uploadAvatar';
 import { useReactFlow } from 'reactflow';
 import { getLayoutedElements } from '@/util/flowUtil';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
+
 const AddPersonForm = () => {
+  const [form] = Form.useForm();
+  const handelLastNameChange = (lastName) => {
+    let fields = form.getFieldValue('children') || [];
+    fields?.forEach((item, index) => {
+      if (!item) {
+        fields[index] = {};
+        fields[index]['lastName'] = lastName;
+      } else {
+        fields[index]['lastName'] = lastName;
+      }
+    });
+
+    form.setFieldsValue({ fields });
+  };
   const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
   const onFinish = (value) => {
     console.log(value);
@@ -17,7 +34,10 @@ const AddPersonForm = () => {
       listOfNode.push({
         id: childId,
         type: 'imageNode',
-        data: { birthday: '1995/2/2', name: item?.firstName },
+        data: {
+          birthday: '1995/2/2',
+          name: `${item.firstName} ${item.lastName}`,
+        },
       });
       listOfEdges.push({ id: uuidv4(), source: parentId, target: childId });
     });
@@ -27,7 +47,10 @@ const AddPersonForm = () => {
         {
           id: parentId,
           type: 'imageNode',
-          data: { birthday: '1995/2/2', name: value.firstName },
+          data: {
+            birthday: '1995/2/2',
+            name: `${value.firstName} ${value.lastName}`,
+          },
         },
       ],
       [
@@ -41,6 +64,7 @@ const AddPersonForm = () => {
 
   return (
     <Form
+      form={form}
       onFinish={onFinish}
       // onFinishFailed={onFinishFailed}
 
@@ -76,7 +100,11 @@ const AddPersonForm = () => {
           },
         ]}
       >
-        <Input />
+        <Input
+          onChange={(e) => {
+            handelLastNameChange(e.target.value);
+          }}
+        />
       </Form.Item>
       <Form.Item label='Date of birth' name='birthDay' labelCol={{ span: 24 }}>
         <DatePicker />
@@ -100,7 +128,7 @@ const AddPersonForm = () => {
       <Form.Item label='Image' labelCol={{ span: 24 }}>
         <UploadAvatar />
       </Form.Item>
-      <Form.List name='children'>
+      <Form.List name='children' form={form}>
         {(fields, { add, remove }) => (
           <>
             {fields.map(({ key, name, ...restField }) => (
