@@ -3,7 +3,6 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import EditFlowPage from '@/components/editFlowPage';
 import AddPersonForm from '@/components/addPersonForm';
-
 const EditFamily = () => {
   return (
     <Row>

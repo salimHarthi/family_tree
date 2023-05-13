@@ -1,9 +1,10 @@
 import dagre from 'dagre';
+import { cardWidth, cardHeight } from '@/constent';
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 324;
-const nodeHeight = 324;
+const nodeWidth = cardWidth;
+const nodeHeight = cardHeight + 20;
 
 export const getLayoutedElements = (nodes, edges, direction = 'TB') => {
   const isHorizontal = direction === 'LR';
