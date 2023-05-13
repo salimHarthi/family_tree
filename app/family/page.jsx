@@ -25,4 +25,8 @@ const AllFamilies = () => {
   );
 };
 
+// this will prevent ssr
+export async function getServerSideProps() {
+  return { props: {} };
+}
 export default AllFamilies;
