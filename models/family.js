@@ -1,7 +1,10 @@
 import { Schema, model, models } from 'mongoose';
 
 const FamilySchema = new Schema({
-  familyName: String,
+  familyName: {
+    type: String,
+    required: [true, 'family name is required!'],
+  },
   flow: {
     edges: [],
     nodes: [],
@@ -9,7 +12,7 @@ const FamilySchema = new Schema({
   },
   users: [
     {
-      userId: { type: Schema.Types.ObjectId, ref: 'User' },
+      userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
       role: [
         {
           type: String,
@@ -22,7 +25,7 @@ const FamilySchema = new Schema({
   logo: {
     type: String,
   },
-  public: {
+  isPublic: {
     type: Boolean,
     default: false,
   },
