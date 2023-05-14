@@ -70,6 +70,7 @@ export default function EditFlowPage() {
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
+      console.log(flow);
       localStorage.setItem('flowKey', JSON.stringify(flow));
     }
   }, [rfInstance]);
