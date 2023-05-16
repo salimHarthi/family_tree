@@ -1,32 +1,13 @@
-'use client';
 import React from 'react';
-import { Col, Row } from 'antd';
 import FamilyCard from '@/components/familyCard';
 
-const AllFamilies = () => {
-  return (
-    <Row justify='center' gutter={[20, 20]}>
-      <Col>
-        <FamilyCard name='test' id='aaaaaaaa' />
-      </Col>
-      <Col>
-        <FamilyCard name='test' />
-      </Col>
-      <Col>
-        <FamilyCard name='test' />
-      </Col>
-      <Col>
-        <FamilyCard name='test' />
-      </Col>
-      <Col>
-        <FamilyCard name='test' />
-      </Col>
-    </Row>
-  );
+const AllFamilies = ({ data }) => {
+  console.log(data);
+  return data.map((item) => <div>aaaaa</div>); //<FamilyCard name='test' id='aaaaaaaa' />;
 };
 
-// this will prevent ssr
 export async function getServerSideProps() {
-  return { props: {} };
+  const data = [1, 2, 3];
+  return { props: { data } };
 }
 export default AllFamilies;
