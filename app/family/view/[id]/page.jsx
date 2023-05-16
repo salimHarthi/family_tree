@@ -11,7 +11,7 @@ import ReactFlow, {
 import ImageNode from '@/components/imageNode';
 import 'reactflow/dist/style.css';
 import { getLayoutedElements } from '@/util/flowUtil';
-import { useGetOneFamily } from '@/dataHooks';
+import { useGetOneFamily } from '@/dataProvider/hooks';
 const nodeTypes = {
   imageNode: ImageNode,
 };
@@ -21,7 +21,6 @@ export default function Page({ params }) {
   const [nodes, setNodes, onNodesChange] = useNodesState();
   const [edges, setEdges, onEdgesChange] = useEdgesState();
   const { setViewport } = useReactFlow();
-  console.log(data, isLoading, isError);
   useEffect(() => {
     if (data) {
       setNodes(data.flow.nodes || []);
