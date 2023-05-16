@@ -1,6 +1,6 @@
 import { Schema, model, models } from 'mongoose';
 
-const FamilySchema = new Schema({
+const FamiliesSchema = new Schema({
   familyName: {
     type: String,
     required: [true, 'family name is required!'],
@@ -31,6 +31,6 @@ const FamilySchema = new Schema({
   },
 });
 
-const Family = models.Family || model('Family', FamilySchema);
+const Families = models.Families || model('Families', FamiliesSchema);
 
-export default Family;
+export default Families;

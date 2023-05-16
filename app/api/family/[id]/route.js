@@ -1,4 +1,4 @@
-import Family from '@/models/family';
+import Families from '@/models/family';
 import { connectToDB } from '@/util/database';
 
 // export const PUT = async (req) => {

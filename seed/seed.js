@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import Families from '@/models/family';
+import Users from '@/models/user';
+const { familySeed, usersSeed } = require('./seedData');
 
 let isConnected = false; // track the connection
 
@@ -9,7 +12,6 @@ export const connectToDB = async () => {
     console.log('MongoDB is already connected');
     return;
   }
-
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
@@ -18,7 +20,7 @@ export const connectToDB = async () => {
 
     isConnected = true;
     const collections = Object.keys(mongoose.connection.collections);
-
+    console.log(collections);
     // Loop through the collections and drop each one
     collections.forEach((collectionName) => {
       const collection = mongoose.connection.collections[collectionName];
@@ -30,7 +32,9 @@ export const connectToDB = async () => {
         }
       });
     });
-    await Vertical.insertMany(verticalsSeed);
+    await Users.insertMany(usersSeed);
+    await Families.insertMany(familySeed);
+
     console.log('MongoDB connected');
     mongoose.connection.close();
   } catch (error) {

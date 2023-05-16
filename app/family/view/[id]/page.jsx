@@ -10,6 +10,7 @@ import ReactFlow, {
 import ImageNode from '@/components/imageNode';
 import 'reactflow/dist/style.css';
 import { getLayoutedElements } from '@/util/flowUtil';
+import { useGetAllFamiles } from '@/dataHooks';
 const nodeTypes = {
   imageNode: ImageNode,
 };
@@ -33,8 +34,10 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
   initialEdges
 );
 export default function ViewFlowPage() {
+  const { data, isLoading, isError } = useGetAllFamiles();
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  console.log(data);
   return (
     <div style={{ height: '100vh' }}>
       <ReactFlow nodeTypes={nodeTypes} nodes={nodes} edges={edges} fitView>
