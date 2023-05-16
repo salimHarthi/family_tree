@@ -1,43 +1,35 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
   MiniMap,
   Controls,
   Background,
+  useReactFlow,
 } from 'reactflow';
 import ImageNode from '@/components/imageNode';
 import 'reactflow/dist/style.css';
 import { getLayoutedElements } from '@/util/flowUtil';
-import { useGetAllFamiles } from '@/dataHooks';
+import { useGetOneFamily } from '@/dataHooks';
 const nodeTypes = {
   imageNode: ImageNode,
 };
 
-const initialNodes = [
-  {
-    id: '1',
-    type: 'imageNode',
-    data: { birthday: '1995/2/2', name: 'salim' },
-  },
-  {
-    id: '2',
-    type: 'imageNode',
-    data: { birthday: '1995/2/2', name: 'salim' },
-  },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+export default function Page({ params }) {
+  const { data, isLoading, isError } = useGetOneFamily(params?.id);
+  const [nodes, setNodes, onNodesChange] = useNodesState();
+  const [edges, setEdges, onEdgesChange] = useEdgesState();
+  const { setViewport } = useReactFlow();
+  console.log(data, isLoading, isError);
+  useEffect(() => {
+    if (data) {
+      setNodes(data.flow.nodes || []);
+      setEdges(data.flow.edges || []);
+      setViewport(data.flow.viewport);
+    }
+  }, [data]);
 
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  initialNodes,
-  initialEdges
-);
-export default function ViewFlowPage() {
-  const { data, isLoading, isError } = useGetAllFamiles();
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
-  console.log(data);
   return (
     <div style={{ height: '100vh' }}>
       <ReactFlow nodeTypes={nodeTypes} nodes={nodes} edges={edges} fitView>
