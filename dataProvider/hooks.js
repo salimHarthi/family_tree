@@ -12,7 +12,20 @@ export const useGetOneFamily = (id) => {
   };
 };
 export const useCreateFamily = () => {
-  const { trigger, isMutating } = useSWRMutation('/api/family', seter);
+  const { trigger, isMutating } = useSWRMutation(
+    '/api/family',
+    seter
+    // , {
+    //   populateCache: (updatedTodo, todos) => {
+    //     // filter the list, and return it with the updated item
+    //     const filteredTodos = todos.filter((todo) => todo.id !== '1');
+    //     return [...filteredTodos, updatedTodo];
+    //   },
+    //   // Since the API already gives us the updated information,
+    //   // we don't need to revalidate here.
+    //   revalidate: false,
+    // }
+  );
 
   return { trigger, isMutating };
 };
