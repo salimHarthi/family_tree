@@ -1,12 +1,13 @@
 'use client';
 import { Button, Form, Input, Switch, Card } from 'antd';
 import UploadAvatar from './uploadAvatar';
-
+import { useCreateFamily } from '@/dataProvider/hooks';
 const AddFamilyForm = () => {
   const [form] = Form.useForm();
-
+  const { trigger, isMutating } = useCreateFamily();
   const onFinish = (value) => {
     console.log(value);
+    trigger(value);
   };
 
   return (

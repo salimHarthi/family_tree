@@ -1,3 +1,6 @@
+import Families from '@/models/family';
+import { connectToDB } from '@/util/database';
+
 export const GET = async (req, { params }) => {
   try {
     await connectToDB();
