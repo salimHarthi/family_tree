@@ -3,7 +3,10 @@ import { connectToDB } from '@/util/database';
 
 export const getAllFamiles = async () => {
   await connectToDB();
-  const families = await Families.find({ isPublic: true });
+  const families = await Families.find({ isPublic: true }).select([
+    'familyName',
+    'logo',
+  ]);
 
   return families;
 };
