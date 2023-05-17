@@ -1,5 +1,4 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { Button, DatePicker, Form, Input, Select, Space } from 'antd';
 import UploadAvatar from './uploadAvatar';
 import { useReactFlow } from 'reactflow';
