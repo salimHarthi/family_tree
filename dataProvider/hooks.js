@@ -4,12 +4,17 @@ import useSWRMutation from 'swr/mutation';
 import { message } from 'antd';
 
 export const useGetOneFamily = (id) => {
-  const { data, error, isLoading } = useSWR(`/api/family/${id}`, fetcher);
+  const { data, error, isLoading, mutate, isValidating } = useSWR(
+    `/api/family/${id}`,
+    fetcher
+  );
 
   return {
     data: data,
     isLoading,
     isError: error,
+    mutate: mutate,
+    isValidating: isValidating,
   };
 };
 export const useCreateFamily = () => {

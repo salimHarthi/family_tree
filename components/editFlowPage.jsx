@@ -22,7 +22,8 @@ const nodeTypes = {
 };
 
 export default function EditFlowPage({ id }) {
-  const { data, isLoading, isError } = useGetOneFamily(id);
+  const { data, isLoading, isError, mutate, isValidating } =
+    useGetOneFamily(id);
 
   const [rfInstance, setRfInstance] = useState(null);
   const [nodes, setNodes, onNodesChange] = useNodesState();
@@ -35,7 +36,7 @@ export default function EditFlowPage({ id }) {
       setEdges(data.flow.edges || []);
       setViewport(data.flow.viewport);
     }
-  }, [data]);
+  }, [data, isValidating]);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params }, eds)),
     []
@@ -54,19 +55,11 @@ export default function EditFlowPage({ id }) {
     if (rfInstance) {
       const flow = rfInstance.toObject();
       trigger({ flow: flow });
-      localStorage.setItem('flowKey', JSON.stringify(flow));
     }
   }, [rfInstance]);
   const onRestore = useCallback(() => {
     const restoreFlow = async () => {
-      const flow = JSON.parse(localStorage.getItem('flowKey'));
-      console.log(flow);
-      if (flow) {
-        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-        setNodes(flow.nodes || []);
-        setEdges(flow.edges || []);
-        setViewport({ x, y, zoom });
-      }
+      mutate();
     };
 
     restoreFlow();
