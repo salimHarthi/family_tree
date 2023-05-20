@@ -14,6 +14,7 @@ const Page = () => {
             name={item?.familyName}
             id={item?._id}
             logo={item?.logo}
+            edit={true}
           />
         ))}
 

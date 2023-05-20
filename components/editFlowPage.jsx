@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -15,44 +15,27 @@ import 'reactflow/dist/style.css';
 import { getLayoutedElements } from '@/util/flowUtil';
 import { Button, Space } from 'antd';
 import { SaveOutlined, ReloadOutlined } from '@ant-design/icons';
+import { useGetOneFamily, useUpdateFamily } from '@/dataProvider/hooks';
+
 const nodeTypes = {
   imageNode: ImageNode,
 };
 
-const initialNodes = [
-  {
-    id: '1',
-    type: 'imageNode',
-    data: { birthday: '1995/2/2', name: 'salim' },
-  },
-  {
-    id: '2',
-    type: 'imageNode',
-    data: { birthday: '1995/2/2', name: 'salim' },
-  },
-  {
-    id: '3',
-    type: 'imageNode',
-    data: { birthday: '1995/2/2', name: 'salim' },
-  },
-  {
-    id: '4',
-    type: 'imageNode',
-    data: { birthday: '1995/2/2', name: 'salim' },
-  },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+export default function EditFlowPage({ id }) {
+  const { data, isLoading, isError } = useGetOneFamily(id);
 
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  initialNodes,
-  initialEdges
-);
-export default function EditFlowPage() {
   const [rfInstance, setRfInstance] = useState(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState();
+  const [edges, setEdges, onEdgesChange] = useEdgesState();
   const { setViewport } = useReactFlow();
-
+  const { trigger, isMutating } = useUpdateFamily(id);
+  useEffect(() => {
+    if (data) {
+      setNodes(data.flow.nodes || []);
+      setEdges(data.flow.edges || []);
+      setViewport(data.flow.viewport);
+    }
+  }, [data]);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge({ ...params }, eds)),
     []
@@ -70,7 +53,7 @@ export default function EditFlowPage() {
   const onSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      console.log(flow);
+      trigger({ flow: flow });
       localStorage.setItem('flowKey', JSON.stringify(flow));
     }
   }, [rfInstance]);

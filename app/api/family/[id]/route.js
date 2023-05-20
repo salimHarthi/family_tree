@@ -1,19 +1,19 @@
 import Families from '@/models/family';
 import { connectToDB } from '@/util/database';
 
-export const PUT = async (req) => {
+export const PUT = async (req, { params }) => {
   try {
     await connectToDB();
-    console.log(req.body);
-    const Families = await Family.findOneAndUpdate(
-      { _id: req.body.id },
+    let data = await req.json();
+    const families = await Families.findOneAndUpdate(
+      { _id: params?.id },
       {
-        ...req.body,
+        ...data,
       }
     );
-    return new Response(JSON.stringify(Families), { status: 200 });
+    return new Response(JSON.stringify(families), { status: 200 });
   } catch (error) {
-    return new Response('Failed to fetch', { status: 500 });
+    return new Response(error, { status: 500 });
   }
 };
 

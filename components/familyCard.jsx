@@ -2,12 +2,12 @@ import Image from 'next/image';
 import { cardWidth } from '@/constent';
 import Link from 'next/link';
 
-const FamilyCard = ({ name, logo, id }) => {
+const FamilyCard = ({ name, logo, id, edit = false }) => {
   return (
     <Link
       style={{ width: cardWidth }}
       href={{
-        pathname: `/family/view/${id}`,
+        pathname: `${edit ? `/my-family/edit/${id}` : `/family/view/${id}`}`,
       }}
     >
       <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>

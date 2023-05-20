@@ -3,14 +3,14 @@ import React from 'react';
 import { Col, Row } from 'antd';
 import EditFlowPage from '@/components/editFlowPage';
 import AddPersonForm from '@/components/addPersonForm';
-const EditFamily = () => {
+const EditFamily = ({ params }) => {
   return (
     <Row>
       <Col md={4} sm={24}>
-        <AddPersonForm />
+        <AddPersonForm id={params?.id} />
       </Col>
       <Col md={20} sm={24}>
-        <EditFlowPage />
+        <EditFlowPage id={params?.id} />
       </Col>
     </Row>
   );

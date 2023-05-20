@@ -1,4 +1,4 @@
-import { fetcher, seter } from '@/util/fetcher';
+import { fetcher, seter, put } from '@/util/fetcher';
 import useSWR, { mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { message } from 'antd';
@@ -15,14 +15,13 @@ export const useGetOneFamily = (id) => {
 export const useCreateFamily = () => {
   const { trigger, isMutating } = useSWRMutation('/api/family', seter, {
     onSuccess: (data, variables, context) => {
-      // Perform the additional mutate operation after a successful mutation
       mutate('/api/family/my', (existingData) => {
         return [...existingData, data];
       });
       message.success('Family added');
     },
     onError: (err, key, config) => {
-      message.success('Error');
+      message.error('Error');
     },
   });
 
@@ -37,4 +36,17 @@ export const useGetMyFamily = () => {
     isLoading,
     isError: error,
   };
+};
+
+export const useUpdateFamily = (id) => {
+  const { trigger, isMutating } = useSWRMutation(`/api/family/${id}`, put, {
+    onSuccess: (data, variables, context) => {
+      message.success('Saved');
+    },
+    onError: (err, key, config) => {
+      message.error('Error');
+    },
+  });
+
+  return { trigger, isMutating };
 };
