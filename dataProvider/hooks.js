@@ -1,6 +1,7 @@
 import { fetcher, seter } from '@/util/fetcher';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
+import { message } from 'antd';
 
 export const useGetOneFamily = (id) => {
   const { data, error, isLoading } = useSWR(`/api/family/${id}`, fetcher);
@@ -12,20 +13,28 @@ export const useGetOneFamily = (id) => {
   };
 };
 export const useCreateFamily = () => {
-  const { trigger, isMutating } = useSWRMutation(
-    '/api/family',
-    seter
-    // , {
-    //   populateCache: (updatedTodo, todos) => {
-    //     // filter the list, and return it with the updated item
-    //     const filteredTodos = todos.filter((todo) => todo.id !== '1');
-    //     return [...filteredTodos, updatedTodo];
-    //   },
-    //   // Since the API already gives us the updated information,
-    //   // we don't need to revalidate here.
-    //   revalidate: false,
-    // }
-  );
+  const { trigger, isMutating } = useSWRMutation('/api/family', seter, {
+    onSuccess: (data, variables, context) => {
+      // Perform the additional mutate operation after a successful mutation
+      mutate('/api/family/my', (existingData) => {
+        return [...existingData, data];
+      });
+      message.success('Family added');
+    },
+    onError: (err, key, config) => {
+      message.success('Error');
+    },
+  });
 
   return { trigger, isMutating };
+};
+
+export const useGetMyFamily = () => {
+  const { data, error, isLoading } = useSWR(`/api/family/my`, fetcher);
+
+  return {
+    data: data,
+    isLoading,
+    isError: error,
+  };
 };

@@ -20,6 +20,7 @@ export const POST = async (req) => {
       familyName: familyName,
       logo: logo,
       isPublic: isPublic,
+      users: [{ userId: 'a666afe7cc34aabdc9f4d87c', role: ['edit', 'view'] }],
     });
     return new Response(JSON.stringify(families), { status: 200 });
   } catch (error) {

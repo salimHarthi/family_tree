@@ -4,8 +4,9 @@ import { connectToDB } from '@/util/database';
 export const GET = async (req, { params }) => {
   try {
     await connectToDB();
-
-    const families = await Families.find({ 'users.userId': 'id' });
+    const families = await Families.find({
+      'users.userId': 'a666afe7cc34aabdc9f4d87c',
+    }).select(['familyName', 'isPublic', 'logo']);
     if (!families) {
       return new Response({ status: 404 });
     }

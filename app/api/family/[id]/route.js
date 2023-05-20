@@ -1,18 +1,21 @@
 import Families from '@/models/family';
 import { connectToDB } from '@/util/database';
 
-// export const PUT = async (req) => {
-//   try {
-//     await connectToDB();
-//     const { familyName, logo, isPublic, } = await req.json();
-//     const Families = await Family.findOneAndUpdate({
-
-//     });
-//     return new Response(JSON.stringify(Families), { status: 200 });
-//   } catch (error) {
-//     return new Response('Failed to fetch', { status: 500 });
-//   }
-// };
+export const PUT = async (req) => {
+  try {
+    await connectToDB();
+    console.log(req.body);
+    const Families = await Family.findOneAndUpdate(
+      { _id: req.body.id },
+      {
+        ...req.body,
+      }
+    );
+    return new Response(JSON.stringify(Families), { status: 200 });
+  } catch (error) {
+    return new Response('Failed to fetch', { status: 500 });
+  }
+};
 
 export const GET = async (req, { params }) => {
   try {
