@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 const navigation = [
-  { name: 'Family', href: '/family', current: true },
+  { name: 'Home', href: '/', current: true },
   { name: 'My Family', href: '/my-family', current: false },
 ];
 

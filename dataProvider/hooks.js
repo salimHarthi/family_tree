@@ -1,4 +1,4 @@
-import { fetcher, seter, put } from '@/util/fetcher';
+import { fetcher, seter, put, remove } from '@/util/fetcher';
 import useSWR, { mutate } from 'swr';
 import useSWRMutation from 'swr/mutation';
 import { message } from 'antd';
@@ -47,6 +47,22 @@ export const useUpdateFamily = (id) => {
   const { trigger, isMutating } = useSWRMutation(`/api/family/${id}`, put, {
     onSuccess: (data, variables, context) => {
       message.success('Saved');
+    },
+    onError: (err, key, config) => {
+      message.error('Error');
+    },
+  });
+
+  return { trigger, isMutating };
+};
+
+export const useDeleteFamily = () => {
+  const { trigger, isMutating } = useSWRMutation(`/api/family/my`, remove, {
+    onSuccess: (data, variables, context) => {
+      mutate('/api/family/my', (existingData) => {
+        return existingData?.filter((item) => item?._id !== data?.id);
+      });
+      message.success('Deleted');
     },
     onError: (err, key, config) => {
       message.error('Error');

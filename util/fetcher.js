@@ -12,3 +12,12 @@ export const put = async (url, { arg }) => {
     body: JSON.stringify(arg),
   }).then((res) => res.json());
 };
+export const remove = async (url, { arg }) => {
+  return fetch(url + `/${arg.id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(arg),
+  }).then((res) => res.json());
+};

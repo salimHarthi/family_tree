@@ -20,7 +20,6 @@ export const connectToDB = async () => {
 
     isConnected = true;
     const collections = Object.keys(mongoose.connection.collections);
-    console.log(collections);
     // Loop through the collections and drop each one
     collections.forEach((collectionName) => {
       const collection = mongoose.connection.collections[collectionName];

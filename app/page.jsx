@@ -1,3 +1,22 @@
-export default function Home() {
-  return <div style={{ width: '100vw', height: '100vh' }}>home</div>;
-}
+import React from 'react';
+import FamilyCard from '@/components/familyCard';
+import { getAllFamiles } from '@/dataProvider/db';
+const Home = async () => {
+  const data = await getAllFamiles();
+
+  return (
+    <div className='flex items-center justify-center'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mx-auto'>
+        {data?.map((item) => (
+          <FamilyCard
+            name={item?.familyName}
+            id={item?._id}
+            logo={item?.logo}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Home;

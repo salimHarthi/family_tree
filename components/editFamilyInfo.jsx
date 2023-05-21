@@ -1,13 +1,14 @@
 'use client';
-import { Button, Form, Input, Switch, Modal } from 'antd';
+import { Form, Input, Switch, Modal } from 'antd';
 import UploadAvatar from './uploadAvatar';
-import { useCreateFamily } from '@/dataProvider/hooks';
-import { PlusOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-const AddFamilyForm = () => {
+import { useUpdateFamily } from '@/dataProvider/hooks';
+import { useState, useEffect } from 'react';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
+
+const EditFamilyInfo = ({ data }) => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { trigger, isMutating } = useCreateFamily();
+  const { trigger, isMutating } = useUpdateFamily(data?._id);
   const onFinish = (value) => {
     trigger(value);
     setIsModalOpen(false);
@@ -24,12 +25,17 @@ const AddFamilyForm = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  useEffect(() => {
+    form.resetFields();
+    console.log(data);
+  }, [data]);
   return (
     <>
-      <Button type='primary' size='large' onClick={showModal}>
-        <PlusOutlined />
-      </Button>
-
+      <PencilSquareIcon
+        className='block h-8 w-8 cursor-pointer'
+        aria-hidden='true'
+        onClick={showModal}
+      />
       <Modal
         title='Creat new family'
         open={isModalOpen}
@@ -38,6 +44,7 @@ const AddFamilyForm = () => {
       >
         <Form
           form={form}
+          initialValues={data}
           onFinish={onFinish}
           // onFinishFailed={onFinishFailed}
           wrapperCol={{
@@ -58,7 +65,7 @@ const AddFamilyForm = () => {
             <Input />
           </Form.Item>
           <Form.Item label='Public' name='isPublic'>
-            <Switch />
+            <Switch checked={data.isPublic} />
           </Form.Item>
           <Form.Item label='logo'>
             <UploadAvatar />
@@ -68,4 +75,4 @@ const AddFamilyForm = () => {
     </>
   );
 };
-export default AddFamilyForm;
+export default EditFamilyInfo;

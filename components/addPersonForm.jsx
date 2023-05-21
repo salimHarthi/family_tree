@@ -23,7 +23,6 @@ const AddPersonForm = () => {
   };
   const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
   const onFinish = (value) => {
-    console.log(value);
     const listOfNode = getNodes();
     const listOfEdges = getEdges();
     const parentId = uuidv4();
