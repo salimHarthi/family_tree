@@ -27,7 +27,6 @@ const EditFamilyInfo = ({ data }) => {
   };
   useEffect(() => {
     form.resetFields();
-    console.log(data);
   }, [data]);
   return (
     <>
