@@ -14,6 +14,7 @@ export const GET = async (req) => {
 
 export const POST = async (req) => {
   //TODO: make limt to 3 families only
+  //TODO: get user id from auth
   try {
     await connectToDB();
     const { familyName, logo, isPublic } = await req.json();
