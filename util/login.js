@@ -14,7 +14,7 @@ export const login = async (email, password) => {
     const result = {
       ...userWithoutPass,
     };
-    return;
+    return result;
   }
   return null;
 };
