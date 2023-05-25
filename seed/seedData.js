@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
+import * as bcrypt from 'bcrypt';
 
 const createRandomUser = () => {
   return {
     _id: faker.database.mongodbObjectId(),
-    username: faker.internet.userName(),
+    password: bcrypt.hashSync('1234', 10),
     email: faker.internet.email(),
     image: faker.image.avatar(),
   };

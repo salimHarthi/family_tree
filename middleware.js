@@ -1,10 +1,19 @@
-import { NextResponse } from 'next/server';
-// This function can be marked `async` if using `await` inside
-export function middleware(req) {
-  return new NextResponse();
-}
+export { default } from 'next-auth/middleware';
+// import { NextResponse } from 'next/server';
 
-// See "Matching Paths" below to learn more
+// export default withAuth(
+//   function middleware(req) {
+//     return NextResponse.next();
+//   },
+//   {
+//     callbacks: {
+//       authorized({ token }) {
+//         return true;
+//       },
+//     },
+//   }
+// );
+
 export const config = {
-  matcher: '/api',
+  matcher: ['/my-family/:path*', '/api/my/:path*'],
 };
