@@ -1,11 +1,12 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { login } from '@/util/login';
+import { login, signin } from '@/util/login';
+import GoogleProvider from 'next-auth/providers/google';
 const handler = NextAuth({
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      id: 'domain-login',
+      name: 'Domain Account',
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
@@ -16,6 +17,7 @@ const handler = NextAuth({
         }
         const user = await login(credentials?.email, credentials?.password);
         if (user) {
+          console.log('ssssssssssssssss', user._id);
           // Any object returned will be saved in `user` property of the JWT
           return user;
         } else {
@@ -26,24 +28,31 @@ const handler = NextAuth({
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, id: user?._id };
+    async jwt({ token, user, profile }) {
+      console.log('{ token, user }', profile);
+      return { ...token, ...user };
     },
-
+    async signIn({ account, profile, user, credentials }) {
+      return signin(profile, user);
+    },
     // async session({ session, token }) {
     //   session.user = token;
     //   return session;
     // },
   },
-  pages: {
-    signIn: '/login',
-    // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
-    // verifyRequest: '/auth/verify-request', // (used for check email message)
-    // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-  },
+  // pages: {
+  //   // signIn: '/login',
+  //   // signOut: '/auth/signout',
+  //   // error: '/auth/error', // Error code passed in query string as ?error=
+  //   // verifyRequest: '/auth/verify-request', // (used for check email message)
+  //   // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+  // },
 });
 
 export { handler as GET, handler as POST };

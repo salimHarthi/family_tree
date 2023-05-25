@@ -17,6 +17,7 @@ function classNames(...classes) {
 export default function NavBar() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  // console.log(session);
   return (
     <Disclosure as='nav' className='bg-gray-800 fixed top-0 left-0 w-full z-10'>
       {({ open }) => (
