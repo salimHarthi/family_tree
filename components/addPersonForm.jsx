@@ -108,7 +108,7 @@ const AddPersonForm = () => {
       <Form.Item label='Date of birth' name='birthDay' labelCol={{ span: 24 }}>
         <DatePicker />
       </Form.Item>
-      <Form.Item label='Father' name='father' labelCol={{ span: 24 }}>
+      <Form.Item label='Parent' name='parent' labelCol={{ span: 24 }}>
         <Select
           showSearch
           allowClear
@@ -116,14 +116,14 @@ const AddPersonForm = () => {
           options={[{ value: '1', label: 'salim' }]}
         />
       </Form.Item>
-      <Form.Item label='Mother' name='mother' labelCol={{ span: 24 }}>
+      {/* <Form.Item label='Mother' name='mother' labelCol={{ span: 24 }}>
         <Select
           showSearch
           allowClear
           labelInValue
           options={[{ value: 1, label: 'salim' }]}
         />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item label='Image' labelCol={{ span: 24 }}>
         <UploadAvatar />
       </Form.Item>
