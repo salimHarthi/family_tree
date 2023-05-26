@@ -5,6 +5,8 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
+
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'My Family', href: '/my-family' },
@@ -17,7 +19,6 @@ function classNames(...classes) {
 export default function NavBar() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  // console.log(session);
   return (
     <Disclosure as='nav' className='bg-gray-800 fixed top-0 left-0 w-full z-10'>
       {({ open }) => (
@@ -87,10 +88,12 @@ export default function NavBar() {
                     {session?.user ? (
                       <Menu.Button className='flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'>
                         <span className='sr-only'>Open user menu</span>
-                        <img
+                        <Image
                           className='h-8 w-8 rounded-full'
-                          src={user?.photoURL}
+                          src={session?.user?.image}
                           alt=''
+                          width={32}
+                          height={32}
                         />
                       </Menu.Button>
                     ) : (

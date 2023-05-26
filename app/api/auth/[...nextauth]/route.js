@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { login, signin } from '@/util/login';
+import { login, signin, getUserInfo } from '@/util/login';
 import GoogleProvider from 'next-auth/providers/google';
 const handler = NextAuth({
   providers: [
@@ -17,7 +17,6 @@ const handler = NextAuth({
         }
         const user = await login(credentials?.email, credentials?.password);
         if (user) {
-          console.log('ssssssssssssssss', user._id);
           // Any object returned will be saved in `user` property of the JWT
           return user;
         } else {
@@ -35,16 +34,20 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, profile }) {
-      console.log('{ token, user }', profile);
-      return { ...token, ...user };
+      if (profile) {
+        let myUser = await getUserInfo(profile);
+        return { ...token, ...myUser };
+      } else {
+        return { ...token, ...user };
+      }
     },
     async signIn({ account, profile, user, credentials }) {
-      return signin(profile, user);
+      return signin(profile, account);
     },
-    // async session({ session, token }) {
-    //   session.user = token;
-    //   return session;
-    // },
+    async session({ session, token }) {
+      session.user = token;
+      return session;
+    },
   },
   // pages: {
   //   // signIn: '/login',
