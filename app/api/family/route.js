@@ -1,5 +1,6 @@
 import Families from '@/models/family';
 import { connectToDB } from '@/util/database';
+import { getToken } from 'next-auth/jwt';
 
 export const GET = async (req) => {
   try {
@@ -14,15 +15,18 @@ export const GET = async (req) => {
 
 export const POST = async (req) => {
   //TODO: make limt to 3 families only
-  //TODO: get user id from auth
   try {
     await connectToDB();
+    const token = await getToken({ req });
+    if (!token) {
+      return new Response({}, { status: 401 });
+    }
     const { familyName, logo, isPublic } = await req.json();
     const families = await Families.create({
       familyName: familyName,
       logo: logo,
       isPublic: isPublic,
-      users: [{ userId: 'a666afe7cc34aabdc9f4d87c', role: ['edit', 'view'] }],
+      users: [{ userId: token.userId, role: ['edit', 'view'] }],
     });
     return new Response(JSON.stringify(families), { status: 200 });
   } catch (error) {

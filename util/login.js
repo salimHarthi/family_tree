@@ -4,14 +4,26 @@ import { connectToDB } from '@/util/database';
 import * as bcrypt from 'bcrypt';
 
 export const login = async (email, password) => {
-  await connectToDB();
+  try {
+    await connectToDB();
 
-  const user = await Users.findOne({ email: email });
-  if (user && (await bcrypt.compare(password, user.password))) {
-    const { password, ...userWithoutPass } = user;
-    return { userId: user._id, image: user.image };
+    const user = await Users.findOne({ email: email });
+    if (user) {
+      if (await bcrypt.compare(password, user.password)) {
+        const { password, ...userWithoutPass } = user;
+        return { userId: user._id, image: user.image };
+      }
+      return null;
+    } else {
+      const newUser = await Users.create({
+        email: email,
+        password: bcrypt.hashSync(password, 10),
+      });
+      return { userId: newUser._id, image: newUser.image };
+    }
+  } catch (error) {
+    return null;
   }
-  return null;
 };
 
 export const signin = async (profile, account) => {

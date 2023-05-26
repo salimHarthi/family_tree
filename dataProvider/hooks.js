@@ -35,7 +35,6 @@ export const useCreateFamily = () => {
 
 export const useGetMyFamily = () => {
   const { data, error, isLoading } = useSWR(`/api/family/my`, fetcher);
-
   return {
     data: data,
     isLoading,

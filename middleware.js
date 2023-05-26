@@ -15,5 +15,5 @@ export { default } from 'next-auth/middleware';
 // );
 
 export const config = {
-  matcher: ['/my-family/:path*', '/api/my/:path*'],
+  matcher: ['/my-family/:path*'],
 };

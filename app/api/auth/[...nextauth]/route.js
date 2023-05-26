@@ -6,7 +6,7 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       id: 'domain-login',
-      name: 'Domain Account',
+      name: 'Credentials / Sign up',
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
