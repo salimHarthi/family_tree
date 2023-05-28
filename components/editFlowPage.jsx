@@ -67,9 +67,15 @@ export default function EditFlowPage({ id }) {
 
     restoreFlow();
   }, [setNodes, setViewport]);
-  return (
-    <Spin spinning={isLoading} size={'large'}>
-      <div style={{ height: '100vh' }}>
+  if (isLoading) {
+    return (
+      <div className='full-page'>
+        <Spin spinning={isLoading} size={'large'} />
+      </div>
+    );
+  } else {
+    return (
+      <div className='h-full'>
         <ReactFlow
           nodeTypes={nodeTypes}
           nodes={nodes}
@@ -116,6 +122,6 @@ export default function EditFlowPage({ id }) {
           </Panel>
         </ReactFlow>
       </div>
-    </Spin>
-  );
+    );
+  }
 }

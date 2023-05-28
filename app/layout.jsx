@@ -19,11 +19,9 @@ export default function RootLayout({ children, session }) {
               algorithm: theme.darkAlgorithm,
             }}
           >
-            <body>
-              <div className='mt-8'>
-                <NavBar />
-              </div>
-              <div className='p-5'>{children}</div>
+            <body className='h-screen'>
+              <NavBar />
+              <div className='pt-14 h-full px-4'>{children}</div>
             </body>
           </ConfigProvider>
         </ReactFlowProvider>

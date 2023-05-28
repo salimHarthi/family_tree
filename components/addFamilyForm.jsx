@@ -4,12 +4,14 @@ import UploadAvatar from './uploadAvatar';
 import { useCreateFamily } from '@/dataProvider/hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import { faker } from '@faker-js/faker';
+
 const AddFamilyForm = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { trigger, isMutating } = useCreateFamily();
   const onFinish = (value) => {
-    trigger(value);
+    trigger({ ...value, logo: faker.image.avatarGitHub() });
     setIsModalOpen(false);
   };
 

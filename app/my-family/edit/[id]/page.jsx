@@ -7,14 +7,16 @@ import { ReactFlowProvider } from 'reactflow';
 const EditFamily = ({ params }) => {
   return (
     <ReactFlowProvider>
-      <Row>
-        <Col md={4} sm={24}>
-          <AddPersonForm id={params?.id} />
-        </Col>
-        <Col md={20} sm={24}>
-          <EditFlowPage id={params?.id} />
-        </Col>
-      </Row>
+      <Col className='h-full'>
+        <Row className='h-full'>
+          <Col md={4} sm={24}>
+            <AddPersonForm id={params?.id} />
+          </Col>
+          <Col md={20} sm={24}>
+            <EditFlowPage id={params?.id} />
+          </Col>
+        </Row>
+      </Col>
     </ReactFlowProvider>
   );
 };
