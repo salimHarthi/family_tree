@@ -13,7 +13,7 @@ import ReactFlow, {
 import ImageNode from '@/components/imageNode';
 import 'reactflow/dist/style.css';
 import { getLayoutedElements } from '@/util/flowUtil';
-import { Button, Space } from 'antd';
+import { Button, Space, Spin } from 'antd';
 import { SaveOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useGetOneFamily, useUpdateFamily } from '@/dataProvider/hooks';
 
@@ -24,7 +24,6 @@ const nodeTypes = {
 export default function EditFlowPage({ id }) {
   const { data, isLoading, isError, mutate, isValidating } =
     useGetOneFamily(id);
-
   const [rfInstance, setRfInstance] = useState(null);
   const [nodes, setNodes, onNodesChange] = useNodesState();
   const [edges, setEdges, onEdgesChange] = useEdgesState();
@@ -65,44 +64,46 @@ export default function EditFlowPage({ id }) {
     restoreFlow();
   }, [setNodes, setViewport]);
   return (
-    <div style={{ height: '100vh' }}>
-      <ReactFlow
-        nodeTypes={nodeTypes}
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onInit={setRfInstance}
-      >
-        <Controls />
-        <MiniMap nodeColor='#6865A5' nodeStrokeWidth={3} zoomable pannable />
-        <Background variant='dots' gap={12} size={1} />
-        <Panel position='top-right'>
-          <Space direction='horizontal'>
-            <Button
-              size='large'
-              type='primary'
-              ghost={false}
-              onClick={() => onLayout('TB')}
-            >
-              Align
-            </Button>
-            <Button
-              size='large'
-              icon={<SaveOutlined />}
-              type='primary'
-              onClick={onSave}
-            ></Button>
-            <Button
-              size='large'
-              icon={<ReloadOutlined />}
-              type='primary'
-              onClick={onRestore}
-            ></Button>
-          </Space>
-        </Panel>
-      </ReactFlow>
-    </div>
+    <Spin spinning={isLoading} size={'large'}>
+      <div style={{ height: '100vh' }}>
+        <ReactFlow
+          nodeTypes={nodeTypes}
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onInit={setRfInstance}
+        >
+          <Controls />
+          <MiniMap nodeColor='#6865A5' nodeStrokeWidth={3} zoomable pannable />
+          <Background variant='dots' gap={12} size={1} />
+          <Panel position='top-right'>
+            <Space direction='horizontal'>
+              <Button
+                size='large'
+                type='primary'
+                ghost={false}
+                onClick={() => onLayout('TB')}
+              >
+                Align
+              </Button>
+              <Button
+                size='large'
+                icon={<SaveOutlined />}
+                type='primary'
+                onClick={onSave}
+              ></Button>
+              <Button
+                size='large'
+                icon={<ReloadOutlined />}
+                type='primary'
+                onClick={onRestore}
+              ></Button>
+            </Space>
+          </Panel>
+        </ReactFlow>
+      </div>
+    </Spin>
   );
 }
