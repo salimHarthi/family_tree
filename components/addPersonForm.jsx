@@ -57,7 +57,7 @@ const AddPersonForm = ({ id }) => {
         id: childId,
         type: 'imageNode',
         data: {
-          birthday: value?.birthDay?.format('YYYY/MM/DD'),
+          birthday: item?.birthDay?.format('YYYY/MM/DD'),
           name: `${item.firstName} ${item.lastName}`,
           image: faker.image.avatarGitHub(),
         },

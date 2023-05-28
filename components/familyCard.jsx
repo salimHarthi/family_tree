@@ -14,13 +14,13 @@ const FamilyCard = ({ name, logo, id, onDelete, onEdit, edit = false }) => {
           pathname: `${edit ? `/my-family/edit/${id}` : `/family/view/${id}`}`,
         }}
       >
-        <Image
+        {/* <Image
           style={{ maxHeight: 320, maxWidth: 240 }}
           src={logo}
           width={240}
           height={320}
           alt='Picture of the author'
-        />
+        /> */}
 
         <div className='p-5 text-center'>
           <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>

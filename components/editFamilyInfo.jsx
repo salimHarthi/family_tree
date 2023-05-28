@@ -66,9 +66,9 @@ const EditFamilyInfo = ({ data }) => {
           <Form.Item label='Public' name='isPublic'>
             <Switch checked={data.isPublic} />
           </Form.Item>
-          <Form.Item label='logo'>
+          {/* <Form.Item label='logo'>
             <UploadAvatar />
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     </>

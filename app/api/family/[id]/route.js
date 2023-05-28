@@ -21,7 +21,7 @@ export const GET = async (req, { params }) => {
   try {
     await connectToDB();
 
-    const families = await Families.findById(params?.id);
+    const families = await Families.findOne({ _id: params?.id });
     if (!families) {
       return new Response({ status: 404 });
     }
