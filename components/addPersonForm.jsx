@@ -1,12 +1,38 @@
 'use client';
 import { Button, DatePicker, Form, Input, Select, Space } from 'antd';
-import UploadAvatar from './uploadAvatar';
+// import UploadAvatar from './uploadAvatar';
 import { useReactFlow } from 'reactflow';
 import { getLayoutedElements } from '@/util/flowUtil';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
+import { faker } from '@faker-js/faker';
+import { useGetOneFamily } from '@/dataProvider/hooks';
+import { useMemo } from 'react';
 
-const AddPersonForm = () => {
+const AddPersonForm = ({ id }) => {
+  const { data, isLoading, isError, mutate, isValidating } =
+    useGetOneFamily(id);
+  const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
+  const listOfNode = getNodes();
+  console.log('listOfNode,', listOfNode);
+  const parentOptions = useMemo(() => {
+    if (data) {
+      let apiNodes = data?.flow?.nodes?.map((item) => {
+        return { value: item?.id, label: item?.data?.name };
+      });
+      let otherNodes = listOfNode?.map((item) => {
+        return { value: item?.id, label: item?.data?.name };
+      });
+      console.log('otherNodes', otherNodes);
+      let combinedArray = [...apiNodes, ...otherNodes];
+      const unique = combinedArray.filter(
+        (obj, index) =>
+          combinedArray.findIndex((item) => item.value === obj.value) === index
+      );
+      return unique;
+    }
+    return [];
+  }, [data, listOfNode]);
   const [form] = Form.useForm();
   const handelLastNameChange = (lastName) => {
     let fields = form.getFieldValue('children') || [];
@@ -21,7 +47,7 @@ const AddPersonForm = () => {
 
     form.setFieldsValue({ fields });
   };
-  const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
+
   const onFinish = (value) => {
     const listOfNode = getNodes();
     const listOfEdges = getEdges();
@@ -33,8 +59,9 @@ const AddPersonForm = () => {
         id: childId,
         type: 'imageNode',
         data: {
-          birthday: '1995/2/2',
+          birthday: value?.birthDay?.format('YYYY/MM/DD'),
           name: `${item.firstName} ${item.lastName}`,
+          image: faker.image.avatarGitHub(),
         },
       });
       listOfEdges.push({ id: uuidv4(), source: parentId, target: childId });
@@ -46,8 +73,9 @@ const AddPersonForm = () => {
           id: parentId,
           type: 'imageNode',
           data: {
-            birthday: '1995/2/2',
+            birthday: value?.birthDay?.format('YYYY/MM/DD'),
             name: `${value.firstName} ${value.lastName}`,
+            image: faker.image.avatarGitHub(),
           },
         },
       ],
@@ -63,6 +91,7 @@ const AddPersonForm = () => {
 
   return (
     <Form
+      isLoading={isLoading}
       form={form}
       onFinish={onFinish}
       // onFinishFailed={onFinishFailed}
@@ -109,12 +138,7 @@ const AddPersonForm = () => {
         <DatePicker />
       </Form.Item>
       <Form.Item label='Parent' name='parent' labelCol={{ span: 24 }}>
-        <Select
-          showSearch
-          allowClear
-          labelInValue
-          options={[{ value: '1', label: 'salim' }]}
-        />
+        <Select showSearch allowClear labelInValue options={parentOptions} />
       </Form.Item>
       {/* <Form.Item label='Mother' name='mother' labelCol={{ span: 24 }}>
         <Select
@@ -124,9 +148,9 @@ const AddPersonForm = () => {
           options={[{ value: 1, label: 'salim' }]}
         />
       </Form.Item> */}
-      <Form.Item label='Image' labelCol={{ span: 24 }}>
+      {/* <Form.Item label='Image' labelCol={{ span: 24 }}>
         <UploadAvatar />
-      </Form.Item>
+      </Form.Item> */}
       <Form.List name='children' form={form}>
         {(fields, { add, remove }) => (
           <>
@@ -176,9 +200,9 @@ const AddPersonForm = () => {
                 >
                   <DatePicker />
                 </Form.Item>
-                <Form.Item labelCol={{ span: 24 }} {...restField} label='Image'>
+                {/* <Form.Item labelCol={{ span: 24 }} {...restField} label='Image'>
                   <UploadAvatar />
-                </Form.Item>
+                </Form.Item> */}
                 <Button
                   type='dashed'
                   onClick={() => remove(name)}

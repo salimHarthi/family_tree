@@ -5,7 +5,7 @@ import { Card } from 'antd';
 import Image from 'next/image';
 import { cardWidth } from '@/constent';
 const { Meta } = Card;
-export default memo(({ data: { birthday, name }, isConnectable }) => {
+export default memo(({ data: { birthday, name, image }, isConnectable }) => {
   const nodeId = useNodeId();
   const { deleteElements, getNode } = useReactFlow();
   const handleDeleteClick = () => {
@@ -27,7 +27,7 @@ export default memo(({ data: { birthday, name }, isConnectable }) => {
         cover={
           <Image
             style={{ maxHeight: 320, maxWidth: 240 }}
-            src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
+            src={image}
             width={240}
             height={320}
             alt='Picture of the author'
