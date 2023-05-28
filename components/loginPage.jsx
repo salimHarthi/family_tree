@@ -20,7 +20,6 @@ export default function Login() {
 
   const signIn = async () => {
     const result = await signInWithPopup(auth, provider);
-    console.log(result.user);
   };
   return (
     <div className='relative flex flex-col justify-center min-h-screen overflow-hidden'>

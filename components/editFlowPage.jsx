@@ -12,9 +12,13 @@ import ReactFlow, {
 } from 'reactflow';
 import ImageNode from '@/components/imageNode';
 import 'reactflow/dist/style.css';
-import { getLayoutedElements } from '@/util/flowUtil';
+import { getLayoutedElements, downloadImage } from '@/util/flowUtil';
 import { Button, Space, Spin } from 'antd';
-import { SaveOutlined, ReloadOutlined } from '@ant-design/icons';
+import {
+  SaveOutlined,
+  ReloadOutlined,
+  DownloadOutlined,
+} from '@ant-design/icons';
 import { useGetOneFamily, useUpdateFamily } from '@/dataProvider/hooks';
 
 const nodeTypes = {
@@ -83,6 +87,14 @@ export default function EditFlowPage({ id }) {
               <Button
                 size='large'
                 type='primary'
+                icon={<DownloadOutlined />}
+                onClick={() => {
+                  downloadImage(nodes);
+                }}
+              />
+              <Button
+                size='large'
+                type='primary'
                 ghost={false}
                 onClick={() => onLayout('TB')}
               >
@@ -93,13 +105,13 @@ export default function EditFlowPage({ id }) {
                 icon={<SaveOutlined />}
                 type='primary'
                 onClick={onSave}
-              ></Button>
+              />
               <Button
                 size='large'
                 icon={<ReloadOutlined />}
                 type='primary'
                 onClick={onRestore}
-              ></Button>
+              />
             </Space>
           </Panel>
         </ReactFlow>

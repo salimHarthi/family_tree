@@ -14,7 +14,6 @@ const AddPersonForm = ({ id }) => {
     useGetOneFamily(id);
   const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
   const listOfNode = getNodes();
-  console.log('listOfNode,', listOfNode);
   const parentOptions = useMemo(() => {
     if (data) {
       let apiNodes = data?.flow?.nodes?.map((item) => {
@@ -23,7 +22,6 @@ const AddPersonForm = ({ id }) => {
       let otherNodes = listOfNode?.map((item) => {
         return { value: item?.id, label: item?.data?.name };
       });
-      console.log('otherNodes', otherNodes);
       let combinedArray = [...apiNodes, ...otherNodes];
       const unique = combinedArray.filter(
         (obj, index) =>
@@ -81,7 +79,7 @@ const AddPersonForm = ({ id }) => {
       ],
       [
         ...listOfEdges,
-        { id: uuidv4(), source: value?.father?.value, target: parentId },
+        { id: uuidv4(), source: value?.parent?.value, target: parentId },
       ]
     );
     setNodes([...layoutedNodes]);

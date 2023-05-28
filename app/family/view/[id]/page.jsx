@@ -14,11 +14,7 @@ import 'reactflow/dist/style.css';
 import { getLayoutedElements, downloadImage } from '@/util/flowUtil';
 import { useGetOneFamily } from '@/dataProvider/hooks';
 import { Button, Space, Spin } from 'antd';
-import {
-  SaveOutlined,
-  ReloadOutlined,
-  DownloadOutlined,
-} from '@ant-design/icons';
+import { ReloadOutlined, DownloadOutlined } from '@ant-design/icons';
 
 const nodeTypes = {
   imageNode: ImageNode,
@@ -76,9 +72,9 @@ export default function Page({ params }) {
                 type='primary'
                 icon={<DownloadOutlined />}
                 onClick={() => {
-                  downloadImage(getNodes);
+                  downloadImage(nodes);
                 }}
-              ></Button>
+              />
               <Button
                 size='large'
                 type='primary'
@@ -92,7 +88,7 @@ export default function Page({ params }) {
                 icon={<ReloadOutlined />}
                 type='primary'
                 onClick={onRestore}
-              ></Button>
+              />
             </Space>
           </Panel>
         </ReactFlow>

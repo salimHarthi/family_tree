@@ -43,14 +43,10 @@ export const ImageDownloader = (dataUrl) => {
   a.click();
 };
 
-export const downloadImage = (getNodes) => {
-  // we calculate a transform for the nodes so that all nodes are visible
-  // we then overwrite the transform of the `.react-flow__viewport` element
-  // with the style option of the html-to-image library
-
+export const downloadImage = (nodes) => {
   const imageWidth = 1024;
   const imageHeight = 768;
-  const nodesBounds = getRectOfNodes(getNodes());
+  const nodesBounds = getRectOfNodes(nodes);
   const transform = getTransformForBounds(nodesBounds, imageWidth, imageHeight);
 
   toPng(document.querySelector('.react-flow__viewport'), {
@@ -62,5 +58,9 @@ export const downloadImage = (getNodes) => {
       height: imageHeight,
       transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
     },
-  }).then(ImageDownloader);
+  })
+    .then(ImageDownloader)
+    .catch((error) => {
+      console.error('Error generating and downloading image:', error);
+    });
 };
