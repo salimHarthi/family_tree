@@ -101,6 +101,7 @@ const AddPersonForm = ({ id }) => {
       }}
       layout='horizontal'
       style={{
+        marginTop: 20,
         maxWidth: 600,
       }}
     >
