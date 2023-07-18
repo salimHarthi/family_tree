@@ -5,13 +5,24 @@ import { useCreateFamily } from '@/dataProvider/hooks';
 import { PlusOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { faker } from '@faker-js/faker';
+import { removeDupArObj } from '@/util/func';
+import SelectUsers from './selectUsers';
 
 const AddFamilyForm = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { trigger, isMutating } = useCreateFamily();
   const onFinish = (value) => {
-    trigger({ ...value, logo: faker.image.avatarGitHub() });
+    let edit = value?.edit?.map((item) => {
+      return { userId: item, role: ['edit', 'view'] };
+    });
+
+    let view = value?.view?.map((item) => {
+      return { userId: item, role: ['view'] };
+    });
+    let users = removeDupArObj([...edit, ...view], 'userId');
+
+    trigger({ ...value, logo: faker.image.avatarGitHub(), users: users });
     setIsModalOpen(false);
   };
 
@@ -28,8 +39,13 @@ const AddFamilyForm = () => {
   };
   return (
     <>
-      <Button type='primary' size='large' onClick={showModal}>
-        <PlusOutlined />
+      <Button
+        type='default'
+        size='large'
+        onClick={showModal}
+        icon={<PlusOutlined />}
+      >
+        Add a Family
       </Button>
 
       <Modal
@@ -58,6 +74,12 @@ const AddFamilyForm = () => {
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item label='Viewer' name='view'>
+            <SelectUsers />
+          </Form.Item>
+          <Form.Item label='Editor' name='edit'>
+            <SelectUsers />
           </Form.Item>
           <Form.Item label='Public' name='isPublic'>
             <Switch />

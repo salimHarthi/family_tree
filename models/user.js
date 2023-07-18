@@ -11,11 +11,13 @@ const UsersSchema = new Schema({
   //   type: String,
   //   required: [true, 'Username is required!'],
   // },
+  friends: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
+
   image: {
     type: String,
   },
 });
 
-const Users = models.Users || model('Users', UsersSchema);
+const Users = models?.Users || model('Users', UsersSchema);
 
 export default Users;

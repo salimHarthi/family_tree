@@ -12,7 +12,6 @@ import { useMemo } from 'react';
 const AddPersonForm = ({ id }) => {
   const { data, isLoading, isError, mutate, isValidating } =
     useGetOneFamily(id);
-  console.log('aaaaaaaaaaaaaaaaaaaaaa');
   const { setNodes, getEdges, getNodes, setEdges } = useReactFlow();
   const listOfNode = getNodes();
   const parentOptions = useMemo(() => {

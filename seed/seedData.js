@@ -50,12 +50,13 @@ const createRandomFamily = (userId) => {
       ],
       viewport: [{ x: 0, y: 0, zoom: 0.5 }],
     },
-    users: [
-      {
-        userId: userId,
-        role: ['view', 'edit'],
-      },
-    ],
+    // users: [
+    //   {
+    //     userId: userId,
+    //     role: ['view', 'edit'],
+    //   },
+    // ],
+    creator: userId,
     logo: faker.image.avatar(),
     isPublic: true,
   };

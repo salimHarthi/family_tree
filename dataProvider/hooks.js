@@ -70,3 +70,28 @@ export const useDeleteFamily = () => {
 
   return { trigger, isMutating };
 };
+
+export const useAddFriend = () => {
+  const { trigger, isMutating } = useSWRMutation('/api/user/friend', seter, {
+    onSuccess: (data, variables, context) => {
+      mutate('/api/user/friend', (existingData) => {
+        return data;
+      });
+      message.success('Friend added');
+    },
+    onError: (err, key, config) => {
+      message.error('This user does not exist');
+    },
+  });
+
+  return { trigger, isMutating };
+};
+
+export const useGetUserFriends = () => {
+  const { data, error, isLoading } = useSWR(`/api/user/friend`, fetcher);
+  return {
+    data: data,
+    isLoading,
+    isError: error,
+  };
+};

@@ -11,8 +11,13 @@ export const GET = async (req, { params }) => {
     }
 
     const families = await Families.find({
-      'users.userId': token.userId,
-    }).select(['familyName', 'isPublic', 'logo']);
+      $or: [{ 'users.userId': token.userId }, { creator: token.userId }],
+    })
+      .select(['familyName', 'isPublic', 'logo', 'creator', 'users'])
+      .populate({
+        path: 'users.userId',
+        select: ['_id', 'email', 'image'],
+      });
     if (!families) {
       return new Response({ status: 404 });
     }

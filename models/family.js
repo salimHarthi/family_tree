@@ -12,7 +12,7 @@ const FamiliesSchema = new Schema({
   },
   users: [
     {
-      userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      userId: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
       role: [
         {
           type: String,
@@ -29,6 +29,7 @@ const FamiliesSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  creator: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
 });
 
 const Families = models.Families || model('Families', FamiliesSchema);

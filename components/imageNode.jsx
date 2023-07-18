@@ -49,7 +49,7 @@ export default memo(({ data: { birthday, name, image }, isConnectable }) => {
         type='target'
         position={Position.Top}
         style={{ background: '#555' }}
-        onConnect={(params) => console.log('handle onConnect', params)}
+        onConnect={(params) => {}}
         isConnectable={isConnectable}
       />
       <Card
@@ -117,7 +117,7 @@ export default memo(({ data: { birthday, name, image }, isConnectable }) => {
         type='source'
         position={Position.Bottom}
         style={{ background: '#555' }}
-        onConnect={(params) => console.log('handle onConnect', params)}
+        onConnect={(params) => {}}
         isConnectable={isConnectable}
       />
     </>

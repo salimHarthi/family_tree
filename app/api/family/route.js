@@ -21,12 +21,13 @@ export const POST = async (req) => {
     if (!token) {
       return new Response({}, { status: 401 });
     }
-    const { familyName, logo, isPublic } = await req.json();
+    const { familyName, logo, isPublic, users } = await req.json();
     const families = await Families.create({
       familyName: familyName,
       logo: logo,
       isPublic: isPublic,
-      users: [{ userId: token.userId, role: ['edit', 'view'] }],
+      users: users,
+      creator: token.userId,
     });
     return new Response(JSON.stringify(families), { status: 200 });
   } catch (error) {
