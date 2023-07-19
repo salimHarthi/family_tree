@@ -214,7 +214,7 @@ const AddPersonForm = ({ id }) => {
             ))}
             <Form.Item>
               <Button
-                type='dashed'
+                type='default'
                 onClick={() => add()}
                 block
                 icon={<PlusOutlined />}
@@ -226,7 +226,7 @@ const AddPersonForm = ({ id }) => {
         )}
       </Form.List>
       <Form.Item>
-        <Button type='primary' htmlType='submit'>
+        <Button type='default' htmlType='submit'>
           Add
         </Button>
       </Form.Item>
