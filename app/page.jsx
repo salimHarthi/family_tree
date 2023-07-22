@@ -1,6 +1,7 @@
 import React from 'react';
 import FamilyCard from '@/components/familyCard';
 import { getAllFamiles } from '@/dataProvider/db';
+export const revalidate = 18000;
 const Home = async () => {
   const data = await getAllFamiles();
 
