@@ -99,7 +99,7 @@ const AddPersonForm = ({ id }) => {
           setShow(!show);
         }}
       >
-        show
+        {show ? 'Hide' : 'Show'}
       </Button>
       {show && (
         <Form
