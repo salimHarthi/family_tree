@@ -13,13 +13,15 @@ const AddFamilyForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { trigger, isMutating } = useCreateFamily();
   const onFinish = (value) => {
-    let edit = value?.edit?.map((item) => {
-      return { userId: item, role: ['edit', 'view'] };
-    });
+    let edit =
+      value?.edit?.map((item) => {
+        return { userId: item, role: ['edit', 'view'] };
+      }) || [];
 
-    let view = value?.view?.map((item) => {
-      return { userId: item, role: ['view'] };
-    });
+    let view =
+      value?.view?.map((item) => {
+        return { userId: item, role: ['view'] };
+      }) || [];
     let users = removeDupArObj([...edit, ...view], 'userId');
 
     trigger({ ...value, logo: faker.image.avatarGitHub(), users: users });
