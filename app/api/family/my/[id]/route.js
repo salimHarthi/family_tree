@@ -11,7 +11,7 @@ export const DELETE = async (req, { params }) => {
     }
     const families = await Families.findOneAndDelete({
       _id: params?.id,
-      'users.userId': token.userId,
+      creator: token.userId,
     });
 
     return new Response(JSON.stringify({ id: params?.id }), {
