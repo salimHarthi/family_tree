@@ -1,4 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Family Tree Web App
+
+<img src="https://github.com/salimHarthi/family_tree/blob/main/public/logo.svg" width="400">
+Link: https://family-tree-db95.vercel.app/
+
+## Introduction
+
+The Family Tree Maker Web App is a user-friendly and interactive platform designed to help users create and visualize their family trees. Whether you're a genealogy enthusiast or simply curious about your family's history, this app offers a seamless experience to explore and document your familial connections. With its intuitive interface and powerful features, building and sharing your family tree becomes an enjoyable journey of discovery.
+
+
+# Runing locally 
+## Requirements
+- node (currnt LTS)
+- google auth api
+- mongoDB
+
+Note: Please ignore all the firebase keys as firebase is not used in this app.
+
 
 ## Getting Started
 
